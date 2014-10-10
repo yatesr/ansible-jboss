@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # {{ ansible_managed }}
 #
 # JBoss standalone control script
@@ -9,9 +9,8 @@
 # pidfile: /var/run/jboss-as/jboss-as-standalone.pid
 # config: /etc/jboss-as/jboss-as.conf
 
-# Define LSB log_* functions.
-# Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
-. /lib/lsb/init-functions
+# Source function library.
+. /etc/init.d/functions
 
 # Load Java configuration.
 [ -r /etc/java/java.conf ] && . /etc/java/java.conf
@@ -19,7 +18,7 @@ export JAVA_HOME
 
 ##
 # Set the JBoss user
-JBOSS_USER=jboss  
+JBOSS_USER={{jboss_owner}}
 export JBOSS_USER 
 
 # Load JBoss AS init.d configuration.
@@ -32,7 +31,7 @@ fi
 # Set defaults.
 
 if [ -z "$JBOSS_HOME" ]; then
-  JBOSS_HOME=/usr/share/jboss-as
+  JBOSS_HOME={{jboss_base_dir}}/{{jboss_archive_extracted}}
 fi
 export JBOSS_HOME
 
@@ -70,16 +69,6 @@ if [ ! -z "$JBOSS_USER" ]; then
     CMD_PREFIX="su - $JBOSS_USER -c"
   fi
 fi
-
-success()
-{
-        echo -ne "[  OK  ]\r"
-}
-
-failure()
-{
-        echo -ne "[FAILED]\r"
-}
 
 start() {
   echo -n "Starting $prog: "
