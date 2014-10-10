@@ -8,7 +8,7 @@ jboss_https_port: 8443
 jboss_owner                              : "jboss"
 jboss_group                              : "jboss"
 jboss_shell                              : "/bin/false"
-jboss_base_dir                           : "/usr/share/jboss-as"
+jboss_base_dir                           : "/opt/jboss/"
 
 ## Most likely you dont need to edit
 #todo jboss_service_enabled   : 'yes'
