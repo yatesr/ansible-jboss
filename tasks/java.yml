@@ -1,0 +1,11 @@
+- name: Install Java 1.7 (yum)
+  yum: name={{ item }} state=present
+  when: ansible_os_family == 'RedHat'
+  with_items:
+   - java-1.7.0-openjdk
+
+- name: Install Java 1.7 (apt)
+  apt: pkg={{ item }} state=present update_cache=yes
+  when: ansible_os_family == 'Debian'
+  with_items:
+   - openjdk-7-jdk

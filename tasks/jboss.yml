@@ -1,17 +1,25 @@
 ---
-- name: Install Java 1.7 and some basic dependencies (yum)
+- name: Install unzip (yum)
   yum: name={{ item }} state=present
   when: ansible_os_family == 'RedHat'
   with_items:
    - unzip
-   - java-1.7.0-openjdk
 
-- name: Install Java 1.7 and some basic dependencies (apt)
+- name: Install unzip (apt)
   apt: pkg={{ item }} state=present update_cache=yes
   when: ansible_os_family == 'Debian'
   with_items:
    - unzip
-   - openjdk-7-jdk
+
+- name: Check for java 7 install
+  shell: java -version
+  register: java7_installed
+  ignore_errors: yes
+
+- debug: var=java7_installed
+
+- include: java.yml
+  when: '"java version \"1.7" not in java7_installed.stderr'
 
 - name: Create directory for Jboss build
   file: path={{jboss_base_dir}} state=directory mode=0755
